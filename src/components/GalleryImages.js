@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Model from './Model/Model';
 
 function GalleryImages(props) {
@@ -109,7 +109,11 @@ function GalleryImages(props) {
       </div>
     });
 
-  
+  let reBuildListImages = (image) => {
+    listImages.push(image);
+    console.log(listImages);
+    setListImages(listImages);
+  };
 
   return (
    <div className="container">
@@ -119,7 +123,7 @@ function GalleryImages(props) {
         <button type="button" className="btn btn-success" data-toggle="modal" data-target="#exampleModalLong">
           Add Image
         </button>
-        <Model/>
+        <Model onChangeList={reBuildListImages}/>
       </div>
     <hr className="mt-2 mb-5" />
     <div className="row text-center text-lg-left">
