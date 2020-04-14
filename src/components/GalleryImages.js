@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import Model from './Model/Model';
 
 class GalleryImages extends React.Component {
@@ -90,18 +90,25 @@ class GalleryImages extends React.Component {
     };
   }
 
-  reBuildListImages = (image) => {
+  reBuildListImages = (data) => {
+    let image = {
+      title : data.title.current.value,
+      alt : data.alt.current.value,
+      src : data.src.current.value,
+      isUse : data.isUse.current.value
+    };
     this.state.listImagesDefault.push(image);
     this.setState({listImagesDefault:this.state.listImagesDefault});
   };
 
   render() {
     let listImagesHtml = this.state.listImagesDefault.map((cource,index) => {
-      let classActive = "";
+      let classActive = "d-none";
       if (cource.isActive) {
-        classActive = "active";
+        classActive = "";
       }
-      return <div key={index} className="col-lg-3 col-md-4 col-6">
+
+      return <div key={index} className={'col-lg-3 col-md-4 col-6 visible ' + classActive}>
         <div className="h-100 mb-2">
           <a href={cource.src} className="d-block mb-4">
             <img className="img-fluid img-thumbnail" src={cource.src} alt={cource.alt} title={cource.title}/>
@@ -121,21 +128,17 @@ class GalleryImages extends React.Component {
         </div>
       </div>
     });
-    
+    let params = ['title','alt','src','isUse'];
+
     return (
       <div className="container">
         <h1 className="font-weight-light text-center text-lg-left mt-4 mb-0">Thumbnail Gallery</h1>
         <div>
             {/* Button trigger modal */}
-            <button type="button" className="btn btn-success" data-toggle="modal" data-target="#exampleModalLong">
+            <button type="button" className="btn btn-success" data-toggle="modal" data-target="">
               Add Image
             </button>
-            <Model params={
-              title,
-              alt,
-              src,
-              isUse
-            }/>
+            <Model params={params} onSave={this.reBuildListImages}/>
           </div>
         <hr className="mt-2 mb-5" />
         <div className="row text-center text-lg-left">
