@@ -4,37 +4,20 @@ class Model extends React.Component {
 	constructor(props) {
 		super(props);
 		this.handleSubmit = this.handleSubmit.bind(this);
-		// this.fileInput1 = React.createRef();
-		// this.fileInput2 = React.createRef();
-		this.title = React.createRef();
-		this.alt = React.createRef();
-		this.isUse = React.createRef();
-		this.src = React.createRef();
+		let params = this.props.params;
+		params.map((param, index) => {
+			this.params[param] = React.createRef();
+		});
+		console.log(this);
 	}
 	handleSubmit(event) {
 		event.preventDefault();
-		let image = {
-	      "alt" : this.alt.current.value,
-	      "title" : this.title.current.value,
-	      "src" : this.src.current.value,
-	      "isActive" : this.isUse.current.value === '1',
-	    };
-	    this.props.onChangeList(image);
-		// if (this.fileInput1.current.files[0]) {
-		// 	// console.log(URL.createObjectURL(this.fileInput1.current.files[0]),window.URL.createObjectURL(this.fileInput1.current.files[0]));
-		// 	document.getElementById("imageThumnail1").src = URL.createObjectURL(this.fileInput1.current.files[0]);
-		// }
-
-		// if (this.fileInput2.current.files[0]) {
-		// 	document.getElementById("imageThumnail2").src = URL.createObjectURL(this.fileInput2.current.files[0]);
-		// }
+	    // this.props.onSave(image,this);
+	    this.closeModel();
 	}
-	handleChangeImage(event) {
-		console.log(URL.createObjectURL(this.fileInput.current.files[0]),window.URL.createObjectURL(this.fileInput.current.files[0]),document.getElementById("exampleInputFile1").files);
-		document.getElementById("imageThumnail").src = URL.createObjectURL(this.fileInput.current.files[0]);
-		// alert(
-		// 	`Selected file - ${this.fileInput.current.files[0].name}`
-		// );
+
+	onCloseModel() {
+		// document.getElementById("btnClose").click();
 	}
 	render() {
 		return (
@@ -43,7 +26,7 @@ class Model extends React.Component {
 		        <div className="modal-content">
 		          <div className="modal-header">
 		            <h5 className="modal-title" id="exampleModalLongTitle">Add New Image</h5>
-		            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+		            <button type="button" className="close" onClick={this.onCloseModel} aria-label="Close">
 		              <span aria-hidden="true">×</span>
 		            </button>
 		          </div>
@@ -71,7 +54,7 @@ class Model extends React.Component {
 			          	</fieldset>
 			          </div>
 			          <div className="modal-footer">
-			            <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+			            <button type="button" className="btn btn-secondary" id={"btnClose"} onClick={this.onCloseModel} data-dismiss="modal">Close</button>
 			            <button type="submit" className="btn btn-primary">Save changes</button>
 			          </div>
 		          </form>
