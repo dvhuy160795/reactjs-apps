@@ -6,8 +6,10 @@
 let executeRoute =  (req, res, listRouters) => {
     let method = req.method;
 
-    let getData = () => {
-        console.log("get" + method);
+    let getData = (func) => {
+        if (typeof func === "function") {
+            return func();
+        }
     };
 
     let postData = () => {
@@ -44,7 +46,7 @@ let executeRoute =  (req, res, listRouters) => {
     if (listRouters[url]) {
         switch (method.toLowerCase()) {
             case "get":
-                data = getData();
+                data = getData(listRouters[url].func);
                 break;
             case "post":
                 data = postData();

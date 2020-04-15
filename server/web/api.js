@@ -8,7 +8,7 @@ const listRouters = {
     "get_image" : route(
         "get",
         "/get_images",
-        () => {})
+        () => {return("get_imageget_imageget_imageget_image")})
 };
 function route(method, url, func) {
     return {method: "get", url: url, func: func};
