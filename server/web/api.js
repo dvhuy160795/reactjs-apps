@@ -3,7 +3,7 @@ const listRouters = {
     "get_images" : route(
         "get",
         "/get_images",
-        () => {})
+        "ImagesController@getImages")
     ,
     "get_image" : route(
         "get",
@@ -15,13 +15,6 @@ function route(method, url, func) {
 };
 
 function getResponsive(req, res) {
-    let body = "";
-    let statusCode = 200;
-    console.log(router.executeRoute(req, res, listRouters));
-    let resData = {
-        statusCode : statusCode,
-        body : body
-    };
-    return resData;
+    return router.executeRoute(req, res, listRouters);
 }
 exports.getResponsive = getResponsive;

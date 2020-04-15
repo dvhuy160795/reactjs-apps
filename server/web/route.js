@@ -6,38 +6,65 @@
 let executeRoute =  (req, res, listRouters) => {
     let method = req.method;
 
-    let getData = (func) => {
-        if (typeof func === "function") {
-            return func();
-        }
+    let data = {
+        "body" : "",
+        "statusCode" : 200
     };
 
-    let postData = () => {
-        console.log("get" + method);
+    let loadController = (func) => {
+        const controller = require("../http/Controller/" + func.split("@")[0]);
+        return controller[func.split("@")[1]]();
+    };
+
+    let loadDataByRequest = (func) => {
+        if (typeof func === "function") {
+            data.body = func();
+        } else if(typeof func === "string") {
+            data.body = loadController(func);
+        }
+
+        if (!data.body) {
+            data.body = "";
+        }
+        return data;
+    }
+
+    let getData = (func) => {
+        if (!methodChecker(method,"get")) {
+            return "Page not found";
+        }
+
+        return loadDataByRequest(func);
+    };
+
+    let postData = (func) => {
         if (!methodChecker(method,"post")) {
             return "Page not found";
         }
+
+        return loadDataByRequest(func);
     };
 
-    let putData = () => {
+    let putData = (func) => {
         console.log("get" + method);
         if (!methodChecker(method,"put")) {
             return "Page not found";
         }
+        return loadDataByRequest(func);
     };
 
-    let deleteData = () => {
+    let deleteData = (func) => {
         console.log("get" + method);
         if (!methodChecker(method,"delete")) {
             return "Page not found";
         }
+        return loadDataByRequest(func);
     };
 
     let methodChecker = (method, expectedMethod) => {
         return method.toLowerCase() === expectedMethod.toLowerCase();
     };
 
-    let data = null;
     let url = req.url;
     url = url.split("/").filter(function (text) {
         return text !== "";
