@@ -23,10 +23,7 @@ class GalleryImages extends React.Component {
     const api = Axios({
       method: 'post',
       url: 'http://localhost:3001/post_image',
-      data: {
-        firstName: 'Fred',
-        lastName: 'Flintstone'
-      }
+      data: JSON.stringify(image)
     });
     api.then((response) => {
 
@@ -49,6 +46,13 @@ class GalleryImages extends React.Component {
     Axios.get('http://localhost:3001/get_images').then((response) => {
       this.setState({listImagesDefault:response.data.body});
     });
+    // Axios.get('http://localhost:3001/get_images',{
+    //   params: {
+    //     ID: 12345
+    //   }
+    // }).then((response) => {
+    //   this.setState({listImagesDefault:response.data.body});
+    // });
   }
 
   render() {

@@ -13,12 +13,12 @@ let executeRoute =  (req, res, listRouters) => {
 
     let loadController = (func) => {
         const controller = require("../http/Controller/" + func.split("@")[0]);
-        return controller[func.split("@")[1]]();
+        return controller[func.split("@")[1]](req);
     };
 
-    let loadDataByRequest = (func) => {
+    let loadDataByRequest = (func,req) => {
         if (typeof func === "function") {
-            data.body = func();
+            data.body = func(req);
         } else if(typeof func === "string") {
             data.body = loadController(func);
         }
@@ -42,9 +42,7 @@ let executeRoute =  (req, res, listRouters) => {
         if (!methodChecker(method,expectedMethod)) {
             return "Page not found";
         }
-        const chunks = [];
-        req.on('data', chunk => chunks.push(chunk));
-        console.log(req.body);
+        console.log(req.params);
         return loadDataByRequest(func);
     };
 

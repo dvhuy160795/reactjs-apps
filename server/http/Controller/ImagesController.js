@@ -83,6 +83,7 @@ let getImages = () => {
 
 let postImage = (params) => {
     console.log("params",params);
+    return params;
 };
 
 exports.getImages = getImages;

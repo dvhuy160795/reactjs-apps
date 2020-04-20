@@ -14,9 +14,27 @@ const server = http.createServer((req, res) => {
             'Access-Control-Allow-Headers': "*",
             }
         );
-    let dataApi = api.getResponsive(req, res);
-    res.write(JSON.stringify(dataApi));
-    res.end();
+    var body='';
+    req.on('data', function (data) {
+        body +=data;
+    });
+    req.on('end',function(){
+        let params = body;
+        if (req.method === "POST") {
+            params = JSON.parse(body);
+        }
+        // console.log(req.url);
+        let request = {
+            url : req.url,
+            method : req.method,
+            params : params
+        };
+        let dataApi = api.getResponsive(request, res);
+        res.write(JSON.stringify(dataApi));
+        res.end();
+    });
+
+
 });
 
 server.listen(port, hostname);
