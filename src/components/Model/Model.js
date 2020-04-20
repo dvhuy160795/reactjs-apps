@@ -8,6 +8,7 @@ class Model extends React.Component {
 		this.params = [];
 		params.map((param, index) => {
 			this.params[param] = React.createRef();
+			return "";
 		});
 	}
 	handleSubmit(event) {
@@ -21,7 +22,7 @@ class Model extends React.Component {
 	}
 	render() {
 		return (
-		    <div className="modal fade" id="exampleModalLong" tabIndex={-1} role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+		    <div className="modal" id="exampleModalLong" style={{display:"block"}} tabIndex={-1} role="dialog" aria-labelledby="exampleModalLongTitle" >
 		      <div className="modal-dialog" role="document">
 		        <div className="modal-content">
 		          <div className="modal-header">

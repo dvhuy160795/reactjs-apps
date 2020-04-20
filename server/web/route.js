@@ -27,35 +27,38 @@ let executeRoute =  (req, res, listRouters) => {
             data.body = "";
         }
         return data;
-    }
+    };
 
-    let getData = (func) => {
-        if (!methodChecker(method,"get")) {
+    let getData = (func, expectedMethod) => {
+        if (!methodChecker(method,expectedMethod)) {
             return "Page not found";
         }
 
         return loadDataByRequest(func);
     };
 
-    let postData = (func) => {
-        if (!methodChecker(method,"post")) {
+    let postData = (func, expectedMethod) => {
+
+        if (!methodChecker(method,expectedMethod)) {
             return "Page not found";
         }
-
+        const chunks = [];
+        req.on('data', chunk => chunks.push(chunk));
+        console.log(req.body);
         return loadDataByRequest(func);
     };
 
-    let putData = (func) => {
+    let putData = (func, expectedMethod) => {
         console.log("get" + method);
-        if (!methodChecker(method,"put")) {
+        if (!methodChecker(method,expectedMethod)) {
             return "Page not found";
         }
         return loadDataByRequest(func);
     };
 
-    let deleteData = (func) => {
+    let deleteData = (func, expectedMethod) => {
         console.log("get" + method);
-        if (!methodChecker(method,"delete")) {
+        if (!methodChecker(method,expectedMethod)) {
             return "Page not found";
         }
         return loadDataByRequest(func);
@@ -73,10 +76,10 @@ let executeRoute =  (req, res, listRouters) => {
     if (listRouters[url]) {
         switch (method.toLowerCase()) {
             case "get":
-                data = getData(listRouters[url].func);
+                data = getData(listRouters[url].func, listRouters[url].method);
                 break;
             case "post":
-                data = postData();
+                data = postData(listRouters[url].func, listRouters[url].method);
                 break;
             case "put":
                 data = putData();
@@ -85,6 +88,7 @@ let executeRoute =  (req, res, listRouters) => {
                 data = deleteData();
                 break;
             default:
+                data = {message : "Method not found!"};
                 console.log("Method not found!");
                 break;
         }
