@@ -2,7 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-
+use App\Model;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -17,3 +17,16 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::prefix("Images")->group(function () {
+    Route::get('/getImages', function (Request $request) {
+        $images = new Model\Images();
+        return $images::all();
+    });
+
+    Route::post('/saveImage', function (Request $request) {
+        $images = new Model\Images();
+        dd($request->all());
+        return response("aaaaaaaaa");
+    });
+});
+
