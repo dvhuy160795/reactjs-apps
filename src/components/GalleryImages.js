@@ -42,7 +42,7 @@ class GalleryImages extends React.Component {
     let params = ['image_title','image_atl','image_src','image_is_use'];
     ReactDOM.render(
         <React.StrictMode>
-          <Model params={params} onSave={this.reBuildListImages} onClose={this.closeOvlAddImages}/>
+          <Model params={params} onSave={this.reBuildListImages}/>
         </React.StrictMode>,
         document.getElementById('ovlAddImage')
     );

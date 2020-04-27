@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from "react-dom";
 
 class Model extends React.Component {
 	constructor(props) {
@@ -14,7 +13,6 @@ class Model extends React.Component {
 	}
 	handleSubmit(event) {
 		event.preventDefault();
-	    let success = this.props.onSave(this.params,this);
 	}
 
 	onCloseModel() {
