@@ -42,10 +42,10 @@ class ImagesController extends Controller
             $messages = [];
             foreach ($dataForm as $field => $value) {
                 foreach ($rawMessagesValdate[$field] ?? [] as $message) {
-                    $messages[] = $message;
+                    $messages[$field][] = $message;
                 }
             }
-            return response()->json($messages,402);
+            return response()->json($messages,404);
         }
         $images = new Model\Images();
         $isSuccess = $images->saveImage(json_decode(json_encode($request->all())));

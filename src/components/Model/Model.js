@@ -13,6 +13,21 @@ class Model extends React.Component {
 	}
 	handleSubmit(event) {
 		event.preventDefault();
+		this.props.onSave(this.params, (messages) => {
+			let params = this.props.params;
+			params.map((param) => {
+				if (messages[param]) {
+					let strMessage = messages[param].join("<br>");
+					document.getElementById(param + "_ms").innerHTML = strMessage;
+					document.getElementById(param + "_ms").classList.remove("d-none");
+				}
+				return "";
+			});
+		});
+	}
+
+	handleUploadFile = (e) => {
+		console.log(e.target.files[0]);
 	}
 
 	onCloseModel() {
@@ -20,46 +35,49 @@ class Model extends React.Component {
 	}
 	render() {
 		return (
-		    <div className="modal" id="exampleModalLong" style={{display:"block"}} tabIndex={-1} role="dialog" aria-labelledby="exampleModalLongTitle" >
-		      <div className="modal-dialog" role="document">
-		        <div className="modal-content">
-		          <div className="modal-header">
-		            <h5 className="modal-title" id="exampleModalLongTitle">Add New Image</h5>
-		            <button type="button" className="close" onClick={this.onCloseModel} aria-label="Close">
-		              <span aria-hidden="true">×</span>
-		            </button>
-		          </div>
-		          <form onSubmit={this.handleSubmit}>
-			          <div className="modal-body">
-				        <fieldset className="form-group">
-				          <label htmlFor="exampleInputEmail1">Title</label>
-				          <input type="text" className="form-control" id="exampleInputEmail1" placeholder="title" ref={this.params.image_title}/>
-				          <small className="text-muted">We'll never share your email with anyone else.</small>
-				        </fieldset>
-				        <fieldset className="form-group">
-				          <label htmlFor="exampleInputPassword1">Alt</label>
-				          <input type="text" className="form-control" id="exampleInputPassword1" placeholder="alt" ref={this.params.image_atl}/>
-				        </fieldset>
-				        <fieldset className="form-group">
-							<label htmlFor="exampleSelect1">Example select</label>
-							<select className="form-control" id="exampleSelect11" ref={this.params.image_is_use}>
-					            <option value="1">Use</option>
-					            <option value="0">Not Use</option>
-			            	</select>
-				        </fieldset>
-				        <fieldset className="form-group">
-				          <label htmlFor="exampleInputPassword1">Src</label>
-				          <input type="text" className="form-control" id="exampleInputPassword1" placeholder="Src" ref={this.params.image_src}/>
-			          	</fieldset>
-			          </div>
-			          <div className="modal-footer">
-			            <button type="button" className="btn btn-secondary" id={"btnClose"} onClick={this.onCloseModel} data-dismiss="modal">Close</button>
-			            <button type="submit" className="btn btn-primary">Save changes</button>
-			          </div>
-		          </form>
-		        </div>
-		      </div>
-		    </div>
+			<div className="modal" id="exampleModalLong" style={{display:"block"}} tabIndex={-1} role="dialog" aria-labelledby="exampleModalLongTitle" >
+				<div className="modal-dialog" role="document">
+					<div className="modal-content">
+						<div className="modal-header">
+							<h5 className="modal-title" id="exampleModalLongTitle">Add New Image</h5>
+							<button type="button" className="close" onClick={this.onCloseModel} aria-label="Close">
+								<span aria-hidden="true">×</span>
+							</button>
+						</div>
+						<form onSubmit={this.handleSubmit} encType="multipart/form-data">
+							<div className="modal-body">
+								<fieldset className="form-group">
+									<label htmlFor="exampleInputEmail1">Title</label>
+									<input type="text" className="form-control" id="image_title" placeholder="title" ref={this.params.image_title}/>
+									<small className="text-danger d-none" id={"image_title_ms"}>We'll never share your email with anyone else.</small>
+								</fieldset>
+								<fieldset className="form-group">
+									<label htmlFor="exampleInputPassword1">Alt</label>
+									<input type="text" className="form-control" id="image_atl" placeholder="alt" ref={this.params.image_atl}/>
+									<small className="text-danger d-none" id={"image_atl_ms"}>We'll never share your email with anyone else.</small>
+								</fieldset>
+								<fieldset className="form-group">
+									<label htmlFor="exampleSelect1">Example select</label>
+									<select className="form-control" id="image_is_use" ref={this.params.image_is_use}>
+										<option value="1">Use</option>
+										<option value="0">Not Use</option>
+									</select>
+									<small className="text-danger d-none" id={"image_is_use_ms"}>We'll never share your email with anyone else.</small>
+								</fieldset>
+								<fieldset className="form-group">
+									<label htmlFor="image_src">Src</label>
+									<input type="file" className="form-control" id="image_src" name="image"  placeholder="Src" ref={this.params.image_src} onChange={this.handleUploadFile}/>
+									<small className="text-danger d-none" id={"image_src_ms"}>We'll never share your email with anyone else.</small>
+								</fieldset>
+							</div>
+							<div className="modal-footer">
+								<button type="button" className="btn btn-secondary" id={"btnClose"} onClick={this.onCloseModel} data-dismiss="modal">Close</button>
+								<button type="submit" className="btn btn-primary">Save changes</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
 		);
 	}
 }

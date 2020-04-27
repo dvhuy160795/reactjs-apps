@@ -28,8 +28,8 @@ class GalleryImages extends React.Component {
       this.state.listImagesDefault.push(image);
       this.setState({listImagesDefault:this.state.listImagesDefault});
       this.closeOvlAddImages();
-    }).catch((response) => {
-      console.log(response);
+    }).catch((error) => {
+      callback(error.response.data);
     });
   };
 
@@ -55,9 +55,10 @@ class GalleryImages extends React.Component {
 
   render() {
     let listImagesHtml = "";
+
         if (this.state.listImagesDefault) {
           listImagesHtml = this.state.listImagesDefault.map((cource,index) => {
-            if (cource.image_is_use === 1) {
+            if (cource.image_is_use === '1') {
               return (
                 <div key={index} className={'col-lg-3 col-md-4 col-6 visible '}>
                   <div className="h-100 mb-2">
