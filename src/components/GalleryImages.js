@@ -13,80 +13,77 @@ class GalleryImages extends React.Component {
     };
   }
 
-  reBuildListImages = (data) => {
+  reBuildListImages = (data, callback) => {
     let image = {
-      title : data.title.current.value,
-      alt : data.alt.current.value,
-      src : data.src.current.value,
-      isUse : data.isUse.current.value,
+      image_title : data.image_title.current.value,
+      image_atl : data.image_atl.current.value,
+      image_src : data.image_src.current.value,
+      image_is_use : data.image_is_use.current.value,
     };
-    Axios.post('http://localhost:8000/api/Images/saveImage',image).then((response) => {
-
+    const api = Axios({
+      url: 'http://localhost:8000/api/images/saveImage',
+      method: 'post',
+      data: image
     });
-    // const api = Axios({
-    //   url: 'http://localhost:8000/api/Images/saveImage',
-    //   method: 'post',
-    //   data: JSON.stringify(image)
-    // });
-    // api.then((response) => {
-    //
-    // });
-    // this.state.listImagesDefault.push(image);
-    // this.setState({listImagesDefault:this.state.listImagesDefault});
+    api.then((response) => {
+      this.state.listImagesDefault.push(image);
+      this.setState({listImagesDefault:this.state.listImagesDefault});
+      this.closeOvlAddImages();
+    }).catch((response) => {
+      console.log(response);
+    });
+  };
+
+  closeOvlAddImages = () => {
+    ReactDOM.unmountComponentAtNode(document.getElementById('ovlAddImage'));
   };
 
   showOvlAddImages = () => {
-    let params = ['title','alt','src','isUse'];
+    let params = ['image_title','image_atl','image_src','image_is_use'];
     ReactDOM.render(
         <React.StrictMode>
-          <Model params={params} onSave={this.reBuildListImages}/>
+          <Model params={params} onSave={this.reBuildListImages} onClose={this.closeOvlAddImages}/>
         </React.StrictMode>,
         document.getElementById('ovlAddImage')
     );
   };
 
   componentDidMount() {
-    Axios.get('http://localhost:8000/api/Images/getImages').then((response) => {
+    Axios.get('http://localhost:8000/api/images/getImages').then((response) => {
       this.setState({listImagesDefault:response.data.body});
     });
-    // Axios.get('http://localhost:3001/get_images',{
-    //   params: {
-    //     ID: 12345
-    //   }
-    // }).then((response) => {
-    //   this.setState({listImagesDefault:response.data.body});
-    // });
   }
 
   render() {
     let listImagesHtml = "";
         if (this.state.listImagesDefault) {
           listImagesHtml = this.state.listImagesDefault.map((cource,index) => {
-            let classActive = "d-none";
-            if (cource.isActive) {
-              classActive = "";
+            if (cource.image_is_use == 1) {
+              return (
+                <div key={index} className={'col-lg-3 col-md-4 col-6 visible '}>
+                  <div className="h-100 mb-2">
+                    <a href={cource.image_src} className="d-block mb-4">
+                      <img className="img-fluid img-thumbnail" src={cource.image_src} alt={cource.image_atl} title={cource.image_title}/>
+                    </a>
+                    <div className="m-2"></div>
+                    <button type="button" className="btn btn-danger" onClick={() => {
+                      delete this.state.listImagesDefault[index];
+                      let listImagesNew = [];
+
+                      this.state.listImagesDefault.map((image, index) => {
+                        if (image) {
+                          listImagesNew.push(image);
+                        }
+                        return "";
+                      });
+                      this.setState({listImagesDefault:listImagesNew});
+                    }}>Remove</button>
+                  </div>
+                </div>
+              )
+            } else {
+                return "";
             }
-
-            return <div key={index} className={'col-lg-3 col-md-4 col-6 visible ' + classActive}>
-              <div className="h-100 mb-2">
-                <a href={cource.src} className="d-block mb-4">
-                  <img className="img-fluid img-thumbnail" src={cource.src} alt={cource.alt} title={cource.title}/>
-                </a>
-                <div className="m-2"></div>
-                <button type="button" className="btn btn-danger" onClick={() => {
-                  delete this.state.listImagesDefault[index];
-                  let listImagesNew = [];
-
-                  this.state.listImagesDefault.map((image, index) => {
-                    if (image) {
-                      listImagesNew.push(image);
-                    }
-                    return "";
-                  });
-                  this.setState({listImagesDefault:listImagesNew});
-                }}>Remove</button>
-              </div>
-            </div>
           });
         }
 

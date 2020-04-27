@@ -17,16 +17,8 @@ use App\Model;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::prefix("Images")->group(function () {
-    Route::get('/getImages', function (Request $request) {
-        $images = new Model\Images();
-        return $images::all();
-    });
-
-    Route::post('/saveImage', function (Request $request) {
-        $images = new Model\Images();
-        dd($request->all());
-        return response("aaaaaaaaa");
-    });
+Route::prefix("images")->group(function () {
+    Route::get('/getImages', "ImagesController@getImages");
+    Route::post('/saveImage', "ImagesController@saveImage");
 });
 
