@@ -2,7 +2,6 @@ import React from 'react';
 import Model from './Model/Model';
 import Axios from 'axios';
 import ReactDOM from "react-dom";
-import App from "../App";
 
 class GalleryImages extends React.Component {
   constructor(props) {
@@ -58,7 +57,7 @@ class GalleryImages extends React.Component {
     let listImagesHtml = "";
         if (this.state.listImagesDefault) {
           listImagesHtml = this.state.listImagesDefault.map((cource,index) => {
-            if (cource.image_is_use == 1) {
+            if (cource.image_is_use === 1) {
               return (
                 <div key={index} className={'col-lg-3 col-md-4 col-6 visible '}>
                   <div className="h-100 mb-2">
