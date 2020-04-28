@@ -13,13 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::prefix("management")->group(function () {
-    Route::get('/', function () {
-        return view('management.home.index');
-    });
-    Route::get('/users', function () {
-        return view('management.users.index');
-    });
-});
+Route::get('email', 'EmailController@sendEmail');
 
 
