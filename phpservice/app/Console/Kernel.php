@@ -26,9 +26,6 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('inspire')
-            ->everyFiveMinutes()
-            ->appendOutputTo(__DIR__.'/Commands'.date("YMd"));
-        $schedule->command('inspire')
             ->everyMinute()
             ->appendOutputTo(__DIR__.'/Commands1111'.date("Yd"));
     }

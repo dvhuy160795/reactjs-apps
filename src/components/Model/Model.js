@@ -26,13 +26,10 @@ class Model extends React.Component {
 		});
 	}
 
-	handleUploadFile = (e) => {
-		console.log(e.target.files[0]);
-	}
-
-	onCloseModel() {
+	onCloseModel = () => {
 		this.props.onClose();
-	}
+	};
+
 	render() {
 		return (
 			<div className="modal" id="exampleModalLong" style={{display:"block"}} tabIndex={-1} role="dialog" aria-labelledby="exampleModalLongTitle" >
@@ -66,7 +63,7 @@ class Model extends React.Component {
 								</fieldset>
 								<fieldset className="form-group">
 									<label htmlFor="image_src">Src</label>
-									<input type="file" className="form-control" id="image_src" name="image"  placeholder="Src" ref={this.params.image_src} onChange={this.handleUploadFile}/>
+									<input type="file" className="form-control" id="image_src" name="image"  placeholder="Src" ref={this.params.image_src}/>
 									<small className="text-danger d-none" id={"image_src_ms"}>We'll never share your email with anyone else.</small>
 								</fieldset>
 							</div>
