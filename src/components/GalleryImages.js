@@ -13,21 +13,13 @@ class GalleryImages extends React.Component {
   }
 
   reBuildListImages = (data, callback) => {
-    let image = {
-      image_title : data.image_title.current.value,
-      image_atl : data.image_atl.current.value,
-      image_src : data.image_src.current.value,
-      image_is_use : data.image_is_use.current.value,
-    };
-    const api = Axios({
-      url: 'http://localhost:8000/api/images/saveImage',
-      method: 'post',
-      data: image
-    });
+    const api = Axios.post('http://localhost:8000/api/images/saveImage',data);
     api.then((response) => {
-      this.state.listImagesDefault.push(image);
-      this.setState({listImagesDefault:this.state.listImagesDefault});
-      this.closeOvlAddImages();
+console.log(response);
+        document.getElementById('img').src = response.data;
+      // this.state.listImagesDefault.push(image);
+      // this.setState({listImagesDefault:this.state.listImagesDefault});
+      // this.closeOvlAddImages();
     }).catch((error) => {
       callback(error.response.data);
     });
