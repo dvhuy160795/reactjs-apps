@@ -94,7 +94,6 @@ class Model extends React.Component {
 								<fieldset className="form-group">
 									<label htmlFor="image_src">Src</label>
 									<input type="file" className="form-control" id="image_src" name="image"  placeholder="Src" onChange={this.onUploadFile}  ref={this.params.image_src}/>
-									<img id={"img"} src=""/>
 									<small className="text-danger d-none" id={"image_src_ms"}>We'll never share your email with anyone else.</small>
 								</fieldset>
 							</div>
