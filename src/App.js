@@ -1,6 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import GalleryImages from './components/GalleryImages';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
 class App extends React.Component {
   constructor(props) {
@@ -9,7 +15,7 @@ class App extends React.Component {
       listCources : [
         {
           "name" : "GalleryImages",
-          "hash" : "GalleryImages",
+          "hash" : "",
           "component" : <GalleryImages/>
         },
         {
@@ -29,17 +35,12 @@ class App extends React.Component {
         }
       ],
       linkActive : 0,
-      aaaa : 1111
     };
   }
 
   handleChangeActive = (index,component) => {
     this.setState({linkActive : index});
-    ReactDOM.render(
-      component,
-      document.getElementById('content')
-    );
-  }
+  };
 
   render() {
     const listCourcesHtml =
@@ -49,30 +50,40 @@ class App extends React.Component {
         classActive = "active";
       }
       
-      return <li key={index} className="nav-item" onClick={this.handleChangeActive.bind(this,index,cource.component)}>
-        <a href={"#" + cource.name} className={'nav-link ' + classActive}>{cource.name}</a>
+      return <li key={index} className="nav-item" onClick={this.handleChangeActive.bind(this,index,cource.component)} >
+        <Link to={"/"+ cource.hash} className={'nav-link ' + classActive}>{cource.name}</Link>
       </li>
     });
     
     return (
-      <div className="container">
-        <div className="row">
-      
-          <div className="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <ul className="nav nav-tabs">
-              {listCourcesHtml}
-            </ul>
+        <Router>
+          <div className="container">
+            <div className="row">
+              <div className="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <ul className="nav nav-tabs">
+                  {listCourcesHtml}
+                </ul>
+              </div>
+            </div>
+            <div className="row">
+              <div id={"content"} className="col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                <Switch>
+                  <Route path="/about">
+                    {""}
+                    {/*<About />*/}
+                  </Route>
+                  <Route path="/Calculator">
+                    {""}
+                    {/*<Users />*/}
+                  </Route>
+                  <Route path="/">
+                    <GalleryImages/>
+                  </Route>
+                </Switch>
+              </div>
+            </div>
           </div>
-      
-        </div>
-        <div className="row">
-      
-          <div id={"content"} className="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-            <GalleryImages aaaa={this.state.aaaa}/>
-          </div>
-      
-        </div>
-      </div>
+        </Router>
     );
   }
 }
