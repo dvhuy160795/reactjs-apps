@@ -6,7 +6,7 @@ import {
   Switch,
   Route,
   Link
-} from "react-router-dom";
+} from "react-router-dom"; // ref: https://reacttraining.com/react-router/web/guides/quick-start
 
 class App extends React.Component {
   constructor(props) {
