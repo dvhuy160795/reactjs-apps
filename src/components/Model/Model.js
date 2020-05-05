@@ -24,7 +24,6 @@ class Model extends React.Component {
 			image_is_use : this.params.image_is_use.current.value,
 		};
 		this.props.onSave(image, (messages) => {
-			let params = this.props.params;
 			let keys = Object.keys(messages);
 			let listBoxValidate = document.getElementsByClassName("message-validate");
 			listBoxValidate.innerHTML = "";
