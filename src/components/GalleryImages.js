@@ -37,6 +37,10 @@ class GalleryImages extends React.Component {
     );
   };
 
+  viewImage = () => {
+    window.location.href = "http://localhost:3000/image";
+  };
+
   componentDidMount() {
     Axios.get('http://localhost:8000/api/images/getImages').then((response) => {
       this.setState({listImagesDefault:response.data.body});
@@ -52,7 +56,7 @@ class GalleryImages extends React.Component {
               return (
                 <div key={index} className={'col-lg-3 col-md-4 col-6 visible '}>
                   <div className="h-100 mb-2">
-                    <a href={cource.image_src} className="d-block mb-4">
+                    <a href={"#"} onClick={this.viewImage} className="d-block mb-4">
                       <img className="img-fluid img-thumbnail" src={cource.image_src} alt={cource.image_atl} title={cource.image_title}/>
                     </a>
                     <div className="m-2"></div>

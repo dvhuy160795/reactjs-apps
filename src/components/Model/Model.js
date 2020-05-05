@@ -25,11 +25,17 @@ class Model extends React.Component {
 		};
 		this.props.onSave(image, (messages) => {
 			let params = this.props.params;
-			params.map((param) => {
-				if (messages[param]) {
-					let strMessage = messages[param].join("<br>");
-					document.getElementById(param + "_ms").innerHTML = strMessage;
-					document.getElementById(param + "_ms").classList.remove("d-none");
+			let keys = Object.keys(messages);
+			let listBoxValidate = document.getElementsByClassName("message-validate");
+			listBoxValidate.innerHTML = "";
+			for (let i = 0; i < listBoxValidate.length; i++) {
+				listBoxValidate[i].classList.add("d-none");
+			}
+			keys.map((key) => {
+				if (messages[key]) {
+					let strMessage = messages[key].join("<br>");
+					document.getElementById(key + "_ms").innerHTML = strMessage;
+					document.getElementById(key + "_ms").classList.remove("d-none");
 				}
 				return "";
 			});
@@ -52,7 +58,6 @@ class Model extends React.Component {
 			})
 		};
 		reader.readAsDataURL(file);
-		console.log(reader,file);
 	}
 	onUploadFile(e) {
 		let files = e.target.files || e.dataTransfer.files;
@@ -76,12 +81,12 @@ class Model extends React.Component {
 								<fieldset className="form-group">
 									<label htmlFor="exampleInputEmail1">Title</label>
 									<input type="text" className="form-control" id="image_title" placeholder="title" ref={this.params.image_title}/>
-									<small className="text-danger d-none" id={"image_title_ms"}>We'll never share your email with anyone else.</small>
+									<small className="text-danger message-validate d-none" id={"image_title_ms"}>We'll never share your email with anyone else.</small>
 								</fieldset>
 								<fieldset className="form-group">
 									<label htmlFor="exampleInputPassword1">Alt</label>
 									<input type="text" className="form-control" id="image_atl" placeholder="alt" ref={this.params.image_atl}/>
-									<small className="text-danger d-none" id={"image_atl_ms"}>We'll never share your email with anyone else.</small>
+									<small className="text-danger message-validate d-none" id={"image_atl_ms"}>We'll never share your email with anyone else.</small>
 								</fieldset>
 								<fieldset className="form-group">
 									<label htmlFor="exampleSelect1">Example select</label>
@@ -89,12 +94,15 @@ class Model extends React.Component {
 										<option value="1">Use</option>
 										<option value="0">Not Use</option>
 									</select>
-									<small className="text-danger d-none" id={"image_is_use_ms"}>We'll never share your email with anyone else.</small>
+									<small className="text-danger message-validate d-none" id={"image_is_use_ms"}>We'll never share your email with anyone else.</small>
 								</fieldset>
 								<fieldset className="form-group">
 									<label htmlFor="image_src">Src</label>
 									<input type="file" className="form-control" id="image_src" name="image"  placeholder="Src" onChange={this.onUploadFile}  ref={this.params.image_src}/>
-									<small className="text-danger d-none" id={"image_src_ms"}>We'll never share your email with anyone else.</small>
+									{/*<small className="text-danger d-none" id={"image_src_ms"}>We'll never share your email with anyone else.</small>*/}
+									<small className="text-danger message-validate d-none" id={"image.name_ms"}>We'll never share your email with anyone else.</small>
+									<small className="text-danger message-validate d-none" id={"image.size_ms"}>We'll never share your email with anyone else.</small>
+									<small className="text-danger message-validate d-none" id={"image.content_ms"}>We'll never share your email with anyone else.</small>
 								</fieldset>
 							</div>
 							<div className="modal-footer">
