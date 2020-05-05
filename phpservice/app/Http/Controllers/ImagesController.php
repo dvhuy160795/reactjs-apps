@@ -13,7 +13,7 @@ class ImagesController extends Controller
     {
         $images = new Model\Images();
         $res = [
-            "body" => $images::all(),
+            "body" => $images->prepareImages($images::all()),
         ];
         return response()->json($res);
     }
@@ -22,38 +22,44 @@ class ImagesController extends Controller
     {
         $images = new Model\Images();
         $dataForm = $request->all();
-        return response()->json($images->saveImage($images->buildData($dataForm)));
-//        $validator = Validator::make($dataForm, [
-//            'image_title' => 'bail|required|max:40',
-//            'image_atl' => 'bail|required|max:255',
-//            'image_src' => 'bail|required|max:255',
-//            'image_is_use' => 'bail|required|max:255',
-//        ], [
-//            'image_title.required' => 'image_title.required',
-//            'image_title.max' => 'image_title.max',
-//            'image_atl.required' => 'image_atl.required',
-//            'image_atl.max' => 'image_atl.max',
-//            'image_src.required' => 'image_src.required',
-//            'image_src.max' => 'image_src.max',
-//            'image_is_use.required' => 'image_is_use.required',
-//        ]);
-//
-//        if (!$validator->passes()) {
-//            $rawMessagesValdate = $validator->getMessageBag()->getMessages();
-//            $messages = [];
-//            foreach ($dataForm as $field => $value) {
-//                foreach ($rawMessagesValdate[$field] ?? [] as $message) {
-//                    $messages[$field][] = $message;
-//                }
-//            }
-//            return response()->json($messages,404);
-//        }
+        $validator = Validator::make($dataForm, [
+            'image_title' => 'bail|required|max:40',
+            'image_atl' => 'bail|required|max:255',
+            'image.name' => 'bail|required|max:255',
+            'image.size' => 'numeric|max:5242880',
+            'image.content' => 'is_image',
+            'image_is_use' => 'required|max:255',
+        ], [
+            'image_title.required' => 'Title is required!',
+            'image_title.max' => 'Title is max!',
+            'image_atl.required' => 'Atl is required!',
+            'image_atl.max' => 'Atl is max!',
+            'image.name.required' => 'File is required!',
+            'image.name.max' => 'File is max!',
+            'image.size.max' => 'File size is max!',
+            'image.content.is_image' => 'File is not image!'
+        ]);
 
-        $isSuccess = $images->saveImage(json_decode(json_encode($request->all())));
+        if (!$validator->passes()) {
+            $rawMessagesValdate = $validator->getMessageBag()->getMessages();
+            $messages = [];
+            foreach ($dataForm as $field => $value) {
+                foreach ($rawMessagesValdate[$field] ?? [] as $message) {
+                    $messages[$field][] = $message;
+                }
+            }
+            return response()->json($rawMessagesValdate,402);
+        }
+        $image = $images->buildData($dataForm);
+        $isSuccess = $images->saveImage($image);
+        if ($isSuccess) {
+            $image['image_src'] = $images->getFileContent($image['image_src']);
+            return response()->json($image);
+        }
         return response()->json($isSuccess);
     }
 
-    public function uploadFile(Request $request) {
-        return response()->json([]);
+    public function viewImage() {
+
     }
 }

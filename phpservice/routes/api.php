@@ -21,5 +21,6 @@ Route::prefix("images")->group(function () {
     Route::get('/getImages', "ImagesController@getImages");
     Route::post('/saveImage', "ImagesController@saveImage");
     Route::post('/uploadFile', "ImagesController@uploadFile");
+    Route::get('/viewImage', "ImagesController@viewImage");
 });
 

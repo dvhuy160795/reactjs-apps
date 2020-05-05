@@ -15,11 +15,9 @@ class GalleryImages extends React.Component {
   reBuildListImages = (data, callback) => {
     const api = Axios.post('http://localhost:8000/api/images/saveImage',data);
     api.then((response) => {
-console.log(response);
-        document.getElementById('img').src = response.data;
-      // this.state.listImagesDefault.push(image);
-      // this.setState({listImagesDefault:this.state.listImagesDefault});
-      // this.closeOvlAddImages();
+      this.state.listImagesDefault.push(response.data);
+      this.setState({listImagesDefault:this.state.listImagesDefault});
+      this.closeOvlAddImages();
     }).catch((error) => {
       callback(error.response.data);
     });

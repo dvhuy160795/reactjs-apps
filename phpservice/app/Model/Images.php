@@ -19,10 +19,12 @@ class Images extends App\ModelBase
     public function saveFileToPath($dataImage)
     {
         $fileName = base64_encode($dataImage['name']).strtotime("now");
-        Storage::disk('local')->put($fileName, $dataImage['content']);
+        $dir = "Gallery";
+        Storage::disk('public')->makeDirectory($dir);
+        Storage::disk('public')->put($dir."\\".$fileName, $dataImage['content']);
         $imageExtension = explode(".",$dataImage['name'])[count(explode(",",$dataImage['name'])) - 1];
         return [
-            "image_src" => storage_path('app')."\\".$fileName,
+            "image_src" => storage_path('app/public')."\\".$dir."\\".$fileName,
             "image_extension" => $imageExtension,
             "image_name" => $fileName,
             "image_size" => $dataImage['size']
@@ -42,5 +44,23 @@ class Images extends App\ModelBase
             "image_size" => $dataImage['image_size']
         ];
         return $result;
+    }
+
+    public function getFileContent($path)
+    {
+        if (file_exists($path)) {
+            return file_get_contents($path);
+        }
+        return "";
+    }
+
+    public function prepareImages($images)
+    {
+        $instance = $this;
+        $images = array_map(function ($image) use ($instance) {
+            $image['image_src'] = $instance->getFileContent($image['image_src']);
+            return $image;
+        }, json_decode(json_encode($images),true));
+        return $images;
     }
 }
