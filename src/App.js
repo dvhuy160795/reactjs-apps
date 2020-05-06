@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import GalleryImages from './components/GalleryImages';
 import {
   BrowserRouter as Router,
