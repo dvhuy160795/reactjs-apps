@@ -20,6 +20,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::prefix("images")->group(function () {
     Route::get('/getImages', "ImagesController@getImages");
     Route::post('/saveImage', "ImagesController@saveImage");
+    Route::delete('/deleteImage', "ImagesController@deleteImage");
     Route::post('/uploadFile', "ImagesController@uploadFile");
     Route::get('/viewImage', "ImagesController@viewImage");
 });

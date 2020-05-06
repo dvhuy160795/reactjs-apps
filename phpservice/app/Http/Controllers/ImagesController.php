@@ -59,7 +59,13 @@ class ImagesController extends Controller
         return response()->json($isSuccess);
     }
 
-    public function viewImage() {
+    public function viewImage(Request $request) {
 
+    }
+
+    public function deleteImage(Request $request) {
+        $idImage = $request->input("image_id");
+        $isSuccess = Model\Images::where('id', $idImage)->delete();
+        return response()->json($isSuccess);
     }
 }

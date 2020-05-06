@@ -15,8 +15,7 @@ class GalleryImages extends React.Component {
   reBuildListImages = (data, callback) => {
     const api = Axios.post('http://localhost:8000/api/images/saveImage',data);
     api.then((response) => {
-      this.state.listImagesDefault.push(response.data);
-      this.setState({listImagesDefault:this.state.listImagesDefault});
+      this.getImages();
       this.closeOvlAddImages();
     }).catch((error) => {
       callback(error.response.data);
@@ -37,14 +36,28 @@ class GalleryImages extends React.Component {
     );
   };
 
+  removeImage = (id) => {
+    const api = Axios.delete('http://localhost:8000/api/images/deleteImage?image_id=' + id);
+    api.then((response) => {
+      this.getImages();
+    }).catch((error) => {
+      console.log(error.response.data);
+    });
+
+  };
+
   viewImage = (id) => {
     window.location.href = "http://localhost:3000/image/" + id;
   };
 
-  componentDidMount() {
+  getImages = () => {
     Axios.get('http://localhost:8000/api/images/getImages').then((response) => {
       this.setState({listImagesDefault:response.data.body});
     });
+  };
+
+  componentDidMount() {
+    this.getImages();
   }
 
   render() {
@@ -60,18 +73,7 @@ class GalleryImages extends React.Component {
                       <img className="img-fluid img-thumbnail" src={cource.image_src} alt={cource.image_atl} title={cource.image_title}/>
                     </a>
                     <div className="m-2"></div>
-                    <button type="button" className="btn btn-danger" onClick={() => {
-                      delete this.state.listImagesDefault[index];
-                      let listImagesNew = [];
-
-                      this.state.listImagesDefault.map((image, index) => {
-                        if (image) {
-                          listImagesNew.push(image);
-                        }
-                        return "";
-                      });
-                      this.setState({listImagesDefault:listImagesNew});
-                    }}>Remove</button>
+                    <button type="button" className="btn btn-danger" onClick={() => this.removeImage(cource.id)}>Remove</button>
                   </div>
                 </div>
               )
