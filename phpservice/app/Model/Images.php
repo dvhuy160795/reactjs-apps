@@ -21,10 +21,10 @@ class Images extends App\ModelBase
         $fileName = base64_encode($dataImage['name']).strtotime("now");
         $dir = "Gallery";
         Storage::disk('public')->makeDirectory($dir);
-        Storage::disk('public')->put($dir."\\".$fileName, $dataImage['content']);
+        Storage::disk('public')->put($dir."/".$fileName, $dataImage['content']);
         $imageExtension = explode(".",$dataImage['name'])[count(explode(",",$dataImage['name'])) - 1];
         return [
-            "image_src" => storage_path('app/public')."\\".$dir."\\".$fileName,
+            "image_src" => storage_path('app/public')."/".$dir."/".$fileName,
             "image_extension" => $imageExtension,
             "image_name" => $fileName,
             "image_size" => $dataImage['size']
