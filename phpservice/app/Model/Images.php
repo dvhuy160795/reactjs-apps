@@ -5,6 +5,7 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use App;
+use Illuminate\Support\Facades\Log;
 
 class Images extends App\ModelBase
 {
@@ -62,5 +63,11 @@ class Images extends App\ModelBase
             return $image;
         }, json_decode(json_encode($images),true));
         return $images;
+    }
+
+    public function searchImages($textSearch)
+    {
+        Log::info(self::where("image_title","like","%".$textSearch."%")->toSql().",%$textSearch%");
+        return $this->prepareImages(self::where("image_title","like","%".$textSearch."%")->get());
     }
 }

@@ -14,5 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('email', 'EmailController@sendEmail');
-
+Route::get('/downloadPdfImage', "ImagesController@downloadPdfImage");
+Route::get('/streamPdfImage', "ImagesController@streamPdfImage");
+Route::get('/savePdfImage', "ImagesController@savePdfImage");
 
