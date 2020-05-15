@@ -6,6 +6,7 @@ import ReactDOM from "react-dom";
 class GalleryImages extends React.Component {
   constructor(props) {
     super(props);
+    this.elSearch = React.createRef();
     this.state = {
       listImagesDefault : [],
       linkActive : 0,
@@ -52,6 +53,13 @@ class GalleryImages extends React.Component {
     });
   };
 
+  searchImages = () => {
+    Axios.get('http://localhost:8000/api/images/searchImages/' + this.elSearch.value).then((response) => {
+      this.setState({listImagesDefault:response.data.body});
+    });
+    console.log(this.elSearch.value);
+  };
+
   componentDidMount() {
     this.getImages();
   }
@@ -83,12 +91,16 @@ class GalleryImages extends React.Component {
       <div className="container">
         <h1 className="font-weight-light text-center text-lg-left mt-4 mb-0">Thumbnail Gallery</h1>
         <div>
-            {/* Button trigger modal */}
-            <button type="button" className="btn btn-success" onClick={this.showOvlAddImages} data-toggle="modal" data-target="">
-              Add Image
-            </button>
-            <div id={"ovlAddImage"}></div>
-          </div>
+          {/* Button trigger modal */}
+          <button type="button" className="btn btn-success" onClick={this.showOvlAddImages} data-toggle="modal" data-target="">
+            Add Image
+          </button>
+          <div id={"ovlAddImage"}></div>
+        </div>
+        <hr className="mt-2 mb-2" />
+        <div className="h-100 mb-2">
+          <input className="form-control" type="text" placeholder="Search" aria-label="Search" ref={(elSearch) => this.elSearch = elSearch} onKeyUp={() => this.searchImages()}/>
+        </div>
         <hr className="mt-2 mb-5" />
         <div className="row text-center text-lg-left">
           {listImagesHtml}

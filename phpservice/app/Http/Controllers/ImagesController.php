@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Model;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests;
+use Barryvdh\DomPDF\Facade as PDF;
+use ZipArchive;
 
 class ImagesController extends Controller
 {
@@ -14,6 +16,15 @@ class ImagesController extends Controller
         $images = new Model\Images();
         $res = [
             "body" => $images->prepareImages($images::all()),
+        ];
+        return response()->json($res);
+    }
+
+    public function searchImages(Request $request, $textSearch = "")
+    {
+        $images = new Model\Images();
+        $res = [
+            "body" => $images->searchImages($textSearch),
         ];
         return response()->json($res);
     }
@@ -65,7 +76,37 @@ class ImagesController extends Controller
 
     public function deleteImage(Request $request) {
         $idImage = $request->input("image_id");
+        $image = new Model\Images();
+        $clienSearch = $image->getElasticSearchClient();
         $isSuccess = Model\Images::where('id', $idImage)->delete();
+        $params = [
+            'index' => 'tbl_images',
+            'type' => '_doc',
+            'id' => $idImage
+        ];
+        $isSuccess = $clienSearch->delete($params);
         return response()->json($isSuccess);
+    }
+
+    public function downloadPdfImage() {
+        $images = new Model\Images();
+        $pdf = PDF::loadView('myPDF', ["data" => $images->prepareImages($images::all())]);
+        return $pdf->download('itsolutionstuff.pdf');
+    }
+
+    public function streamPdfImage() {
+        $images = new Model\Images();
+        $pdf = PDF::loadView('myPDF', ["data" => $images->prepareImages($images::all())]);
+        return $pdf->stream('itsolutionstuff.pdf');
+    }
+
+    public function savePdfImage() {
+        $images = new Model\Images();
+        $pdf = PDF::loadView('myPDF', ["data" => $images->prepareImages($images::all())]);
+        if (!file_exists(storage_path('app/public')."/pdf")) {
+            mkdir(storage_path('app/public')."/pdf", 0775);
+        }
+        $pdf->save(storage_path('app/public')."/pdf/itsolutionstuff.pdf");
+        return 1;
     }
 }

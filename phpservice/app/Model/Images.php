@@ -5,15 +5,63 @@ namespace App\Model;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use App;
+use Illuminate\Support\Facades\Log;
+use Elasticquent\ElasticquentTrait;
+use Elasticsearch\ClientBuilder;
 
 class Images extends App\ModelBase
 {
+    use ElasticquentTrait;
+//
+    protected $fillable = [
+        'image_title',
+        'image_title',
+        "image_atl",
+        "image_is_use",
+        "image_src",
+        "image_extension",
+        "image_name",
+        "image_size"
+    ];
+
+    protected $mappingProperties = [
+        'image_title' => [
+            'type' => '_doc',
+            'analyzer' => 'standard',
+        ],
+        "image_atl" => [
+            'type' => '_doc',
+            'analyzer' => 'standard',
+        ],
+        "image_is_use" => [
+            'type' => '_doc',
+            'analyzer' => 'standard',
+        ],
+        "image_src" => [
+            'type' => '_doc',
+            'analyzer' => 'standard',
+        ],
+        "image_extension" => [
+            'type' => '_doc',
+            'analyzer' => 'standard',
+        ],
+        "image_name" => [
+            'type' => '_doc',
+            'analyzer' => 'standard',
+        ],
+        "image_size" => [
+            'type' => '_doc',
+            'analyzer' => 'standard',
+        ]
+    ];
     protected $table = "tbl_images";
 
     public function saveImage($data)
     {
         $this->bindData($data);
-        return $this->save();
+        $isOk = $this->save();
+        self::addAllToIndex();
+        return $isOk;
     }
 
     public function saveFileToPath($dataImage)
@@ -62,5 +110,16 @@ class Images extends App\ModelBase
             return $image;
         }, json_decode(json_encode($images),true));
         return $images;
+    }
+
+    public function searchImages($textSearch)
+    {
+        Log::info(self::where("image_title","like","%".$textSearch."%")->toSql().",%$textSearch%");
+        $images = self::where("image_title","like","%".$textSearch."%")->get();
+        $images = self::searchByQuery(['wildcard' => [
+            'image_alt' => "A*"
+        ]]);
+
+        return $this->prepareImages($images);
     }
 }
